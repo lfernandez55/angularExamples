@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+<meta name="description" content="Date Directive - Isolate Scope" />
+
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.5/angular.min.js"></script>
+
+  
+<meta charset=utf-8 />
+<title>JS Bin</title>
+</head>
+ <body >
+  <div ng-controller='cntrl'>
+    <div class='foo : bar'></div>
+    <div area="Exams" areadirec ></div>
+  </div>
+  <div ng-controller='cntrl'>
+  <div area="Evals" areadirec ></div>
+  </div>
+  <div ng-controller='cntrl'>
+  <div area="Sites" areadirec ></div>
+  </div>
+  <script>
+      var myMod = angular.module('app', []);
+
+      // myMod.controller('cntrl', function ($scope) {
+      //     $scope.date = '1/1/2000';
+      // });
+
+
+      myMod.directive('areadirec', function () {
+        return {
+        restrict: 'A',
+        //scope:{date:'='},
+        scope:{area: '@'},
+        template: "<button ng-click='selectItem()'>{{area}}</button> </div>",
+        controller: function($scope, $element, $location){
+          $scope.selectItem = function(){
+            console.log(document.getElementById($scope.area));
+            if ( document.getElementById($scope.area) == null){
+                var newSection = "<span id='" + $scope.area +"' class='subsection'><input type='text'></span>"
+                $element.append(newSection);
+            }    
+            var coll = document.getElementsByClassName('subsection');
+            for (var i = 0; i < coll.length; i++) {
+              coll[i].style.display='none';
+            };
+            document.getElementById($scope.area).style.display='';
+            $location.path( "/" + $scope.area );
+          };
+        }
+      };
+      });
+  </script>
+</body> 
+</html>
+
